@@ -19,24 +19,20 @@ public class SlaveCommHandler extends UnicastRemoteObject implements SlaveCommIn
     }
 
     @Override
-    public void publishProblem(ServerCommInterface sci, ClientCommHandler cch, int start, int end) throws Exception {
+    public void publishProblem(ServerCommInterface sci, byte[] problem, int start, int end) throws Exception {
         isBusy = true;
         MessageDigest md = MessageDigest.getInstance("MD5");
-        if (rainbowTable.get(Arrays.toString(cch.currProblem)) != null && cch.currProblem != null) {
-            int i = rainbowTable.get(Arrays.toString(cch.currProblem));
-            System.out.println("Found password in rainbow-table: " + i);
+        if (rainbowTable.get(Arrays.toString(problem)) != null && problem != null) {
+            int i = rainbowTable.get(Arrays.toString(problem));
             sci.submitSolution(teamName, String.valueOf(i));
-            cch.currProblem = null;
             isBusy = false;
             return;
         }
         for (int i = start; i < end && isBusy; i++) {
             byte[] hash = md.digest(String.valueOf(i).getBytes());
             rainbowTable.put(Arrays.toString(hash), i);
-            if (Arrays.equals(cch.currProblem, hash)) {
-                System.out.println("Found password with algo: " + i);
+            if (Arrays.equals(problem, hash)) {
                 sci.submitSolution(teamName, String.valueOf(i));
-                cch.currProblem = null;
                 isBusy = false;
                 return;
             }
@@ -45,7 +41,6 @@ public class SlaveCommHandler extends UnicastRemoteObject implements SlaveCommIn
 
     @Override
     public void interrupt() throws Exception {
-        System.out.println("Slave received interrupt");
         isBusy = false;
     }
 

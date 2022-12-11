@@ -1,11 +1,12 @@
 package client;
 
 import server.ServerCommInterface;
+
 import java.rmi.Remote;
 
 public interface SlaveCommInterface extends Remote {
 
-    public void publishProblem(ServerCommInterface sci, ClientCommHandler cch, int start, int end) throws Exception;
+    public void publishProblem(ServerCommInterface sci, byte[] problem, int start, int end) throws Exception;
 
     void interrupt() throws Exception;
 
