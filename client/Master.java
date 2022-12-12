@@ -31,7 +31,7 @@ public class Master {
 
             if (!mch.bothSlavesBusy()) {
                 mch.sendProblem(sci, cch);
-                Thread.sleep(2);
+                Thread.sleep(10);
             } else if(cch.currProblem == null) {
                 mch.interrupt();
                 cch.currProblem = null;

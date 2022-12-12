@@ -11,6 +11,9 @@ public class SlaveCommHandler extends UnicastRemoteObject implements SlaveCommIn
 
     private final HashMap<String, Integer> rainbowTable = new HashMap<>();
     private final String teamName;
+
+    private int maxInt = 0;
+
     private boolean isBusy;
 
     protected SlaveCommHandler(String teamName) throws Exception {
@@ -28,7 +31,7 @@ public class SlaveCommHandler extends UnicastRemoteObject implements SlaveCommIn
             isBusy = false;
             return;
         }
-        for (int i = start; i < end && isBusy; i++) {
+        for (int i = (Math.max(maxInt, start)); i < end && isBusy; i++) {
             byte[] hash = md.digest(String.valueOf(i).getBytes());
             rainbowTable.put(Arrays.toString(hash), i);
             if (Arrays.equals(problem, hash)) {
@@ -36,6 +39,7 @@ public class SlaveCommHandler extends UnicastRemoteObject implements SlaveCommIn
                 isBusy = false;
                 return;
             }
+            maxInt = i;
         }
     }
 
