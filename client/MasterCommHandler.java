@@ -8,8 +8,6 @@ import java.util.Random;
 
 public class MasterCommHandler extends UnicastRemoteObject implements MasterCommInterface {
 
-    private ClientCommHandler cch;
-
     private final HashMap<String, SlaveCommInterface> slaves = new HashMap<>();
 
     public MasterCommHandler() throws Exception {
@@ -19,6 +17,7 @@ public class MasterCommHandler extends UnicastRemoteObject implements MasterComm
     public void register(String teamName, SlaveCommInterface sc, String arg) throws Exception {
         Random r = new Random();
         slaves.put(String.valueOf(r.nextInt()), sc);
+        System.out.println("Registered slave " + teamName + " at " + arg);
     }
 
     public void sendProblem(ServerCommInterface sci, ClientCommHandler cch) throws Exception {

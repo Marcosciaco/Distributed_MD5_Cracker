@@ -1,7 +1,7 @@
 package client;
 
 import java.rmi.Naming;
-import java.rmi.registry.Registry;
+import java.util.HashMap;
 
 public class Slave {
 
